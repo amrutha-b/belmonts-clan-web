@@ -7,51 +7,73 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function About() {
   const sectionRef = useRef();
-  const titleRef = useRef();
-  const paragraphsRef = useRef([]);
+  const scrollRef = useRef();
+  const contentRef = useRef();
+  const textLinesRef = useRef([]);
   
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Title animation with parchment unroll
-      gsap.from(titleRef.current, {
-        scrollTrigger: {
-          trigger: titleRef.current,
-          start: 'top 80%',
-          end: 'top 50%',
-          scrub: 1,
-        },
-        y: 60,
-        opacity: 0,
-        scale: 0.9,
-        rotateX: -15,
-      });
-      
-      // Paragraph animations with stagger and slide reveal
-      paragraphsRef.current.forEach((para, index) => {
-        gsap.from(para, {
-          scrollTrigger: {
-            trigger: para,
-            start: 'top 88%',
-            end: 'top 65%',
-            scrub: 1.2,
-          },
-          x: index % 2 === 0 ? -60 : 60,
-          y: 30,
-          opacity: 0,
-          rotateY: index % 2 === 0 ? -5 : 5,
-        });
-      });
-      
-      // Container entrance with scale and fade
-      gsap.from(sectionRef.current, {
+      // Parchment scroll unroll animation
+      const scrollTimeline = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 85%',
-          end: 'top 60%',
+          start: 'top top',
+          end: '+=150%',
+          pin: true,
           scrub: 1,
+          anticipatePin: 1,
+        }
+      });
+
+      // Scroll unfurls from top downward
+      scrollTimeline.fromTo(scrollRef.current,
+        {
+          scaleY: 0.05,
+          transformOrigin: 'top center',
+          opacity: 0.8,
         },
-        opacity: 0,
-        scale: 0.95,
+        {
+          scaleY: 1,
+          opacity: 1,
+          duration: 1,
+          ease: 'power2.out',
+        }
+      );
+
+      // Slight bounce at end
+      scrollTimeline.to(scrollRef.current, {
+        scaleY: 0.98,
+        duration: 0.1,
+        ease: 'power1.inOut',
+      });
+
+      scrollTimeline.to(scrollRef.current, {
+        scaleY: 1,
+        duration: 0.1,
+        ease: 'power1.inOut',
+      });
+
+      // Text appears with ink writing effect after scroll opens
+      textLinesRef.current.forEach((line, index) => {
+        if (line) {
+          // Split text into characters
+          const text = line.textContent;
+          line.innerHTML = text.split('').map(char => 
+            `<span class="char" style="opacity: 0">${char === ' ' ? '&nbsp;' : char}</span>`
+          ).join('');
+
+          const chars = line.querySelectorAll('.char');
+          
+          scrollTimeline.to(chars, {
+            opacity: 1,
+            duration: 0.05,
+            stagger: {
+              each: 0.02,
+              from: 'start',
+            },
+            ease: 'none',
+          }, index * 0.3 + 0.8);
+        }
       });
     });
     
@@ -60,60 +82,53 @@ export default function About() {
   
   return (
     <section id="about" className="about" ref={sectionRef}>
-      <div className="about-container">
-        <div className="section-ornament top-ornament">✦</div>
+      <div className="parchment-scroll" ref={scrollRef}>
+        <div className="scroll-edge top-edge"></div>
         
-        <h2 className="section-title" ref={titleRef}>
-          <span className="title-accent">━━━</span>
-          The Kingdom
-          <span className="title-accent">━━━</span>
-        </h2>
-        
-        <div className="about-content">
-          <p 
-            className="about-text intro-text"
-            ref={el => paragraphsRef.current[0] = el}
-          >
-            In the ancient lands where shadows dance with flame, 
-            the <strong>Belmonts</strong> rose from the ashes of forgotten kingdoms. 
-            Forged in the crucible of legendary battles, bound by sacred oaths 
-            that transcend mortal understanding.
-          </p>
-          
-          <div className="story-divider">
-            <span className="divider-symbol">⚔</span>
+        <div className="scroll-content" ref={contentRef}>
+          <div className="wax-seal">
+            <span className="seal-icon">⚔</span>
           </div>
+
+          <h2 className="scroll-title" ref={el => textLinesRef.current[0] = el}>
+            The Kingdom of Belmonts
+          </h2>
           
-          <p 
-            className="about-text"
-            ref={el => paragraphsRef.current[1] = el}
-          >
-            Through centuries of conquest and alliance, our banners have flown 
-            across countless battlefields. We are strategists and warriors, 
-            scholars and rogues, united by an unbreakable code of honor. 
-            Each member brings unique strength to our fellowship.
-          </p>
-          
-          <p 
-            className="about-text"
-            ref={el => paragraphsRef.current[2] = el}
-          >
-            Our legacy is written not in stone, but in the hearts of those 
-            who dare to stand beside us. We do not seek dominion—we forge 
-            brotherhood. We do not crave power—we earn respect through valor.
-          </p>
-          
-          <div className="about-quote">
-            <blockquote ref={el => paragraphsRef.current[3] = el}>
-              "In unity, we find strength. In honor, we find purpose. 
-              In legacy, we find immortality."
-            </blockquote>
-            <cite>— The Belmont Creed</cite>
+          <div className="scroll-text">
+            <p className="manuscript-line" ref={el => textLinesRef.current[1] = el}>
+              In the ancient lands where shadows dance with flame, the Belmonts rose from the ashes of forgotten kingdoms.
+            </p>
+            
+            <p className="manuscript-line" ref={el => textLinesRef.current[2] = el}>
+              Forged in the crucible of legendary battles, bound by sacred oaths that transcend mortal understanding.
+            </p>
+            
+            <div className="ink-divider">⚜</div>
+            
+            <p className="manuscript-line" ref={el => textLinesRef.current[3] = el}>
+              Through centuries of conquest and alliance, our banners have flown across countless battlefields.
+            </p>
+            
+            <p className="manuscript-line" ref={el => textLinesRef.current[4] = el}>
+              We are strategists and warriors, scholars and rogues, united by an unbreakable code of honor.
+            </p>
+            
+            <div className="ink-divider">⚜</div>
+            
+            <p className="manuscript-line manuscript-quote" ref={el => textLinesRef.current[5] = el}>
+              "In unity, we find strength. In honor, we find purpose. In legacy, we find immortality."
+            </p>
+            
+            <p className="manuscript-signature" ref={el => textLinesRef.current[6] = el}>
+              — The Belmont Creed
+            </p>
           </div>
         </div>
         
-        <div className="section-ornament bottom-ornament">✦</div>
+        <div className="scroll-edge bottom-edge"></div>
       </div>
+      
+      <div className="dust-particles"></div>
     </section>
   );
 }

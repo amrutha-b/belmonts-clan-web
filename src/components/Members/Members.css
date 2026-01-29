@@ -11,6 +11,21 @@
   margin: 0 auto;
 }
 
+.section-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  text-align: center;
+  color: #d4a574;
+  margin-bottom: 1rem;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+
+.title-accent {
+  color: #8b7355;
+  margin: 0 1rem;
+}
+
 .members-intro {
   font-family: 'Cinzel', serif;
   font-size: clamp(1rem, 2vw, 1.2rem);
@@ -30,7 +45,7 @@
 
 .member-card {
   perspective: 1000px;
-  height: 400px;
+  height: 480px;
 }
 
 .card-inner {
@@ -52,7 +67,6 @@
   height: 100%;
   backface-visibility: hidden;
   border: 3px solid #8b7355;
-  padding: 2rem;
   display: flex;
   flex-direction: column;
   box-shadow: 
@@ -66,6 +80,8 @@
     0 0, calc(100% - 20px) 0, 100% 20px,
     100% 100%, 20px 100%, 0 calc(100% - 20px)
   );
+  padding: 0;
+  overflow: hidden;
 }
 
 .card-back {
@@ -77,18 +93,47 @@
     0 0, calc(100% - 20px) 0, 100% 20px,
     100% 100%, 20px 100%, 0 calc(100% - 20px)
   );
+  padding: 2rem;
+}
+
+/* Character Image Wrapper */
+.card-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 70%;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(26, 20, 16, 0.5) 0%, rgba(0, 0, 0, 0.8) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.member-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  filter: sepia(0.2) contrast(1.1);
+  transition: transform 0.6s ease, filter 0.4s ease;
+}
+
+.member-card:hover .member-image {
+  transform: scale(1.05);
+  filter: sepia(0.1) contrast(1.15);
+}
+
+.image-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
+  pointer-events: none;
 }
 
 .card-header {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 2rem;
-}
-
-.member-icon {
-  font-size: 3rem;
-  filter: drop-shadow(0 0 10px rgba(212, 165, 116, 0.5));
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 1.5rem 0.5rem;
 }
 
 .member-role-badge {
@@ -110,24 +155,34 @@
   flex-direction: column;
   justify-content: center;
   text-align: center;
+  padding: 1rem 1.5rem;
 }
 
 .member-name {
   font-family: 'Cinzel', serif;
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: #d4c5b0;
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 0.3rem 0;
   letter-spacing: 0.05em;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 .member-title {
   font-family: 'Crimson Text', serif;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-style: italic;
   color: #d4a574;
+  margin: 0 0 0.4rem 0;
+  font-weight: 600;
+}
+
+.member-country {
+  font-family: 'Crimson Text', serif;
+  font-size: 0.85rem;
+  color: #a0886d;
   margin: 0;
+  letter-spacing: 0.03em;
 }
 
 .card-ornament {
@@ -135,18 +190,18 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  margin-top: auto;
+  padding: 0 1.5rem 1rem;
   color: #8b7355;
   font-size: 0.8rem;
 }
 
 .member-description {
   font-family: 'Crimson Text', serif;
-  font-size: 1.1rem;
+  font-size: 1rem;
   line-height: 1.8;
   text-align: center;
   color: #d4c5b0;
-  padding: 1rem;
+  padding: 0;
 }
 
 /* Hover glow effect */
@@ -173,6 +228,7 @@
   );
   transform: rotate(45deg);
   animation: shimmer 3s infinite;
+  z-index: 0;
 }
 
 @keyframes shimmer {
@@ -180,30 +236,89 @@
   100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
 }
 
+/* Responsive Design */
 @media (max-width: 768px) {
   .members {
     padding: 6rem 1rem;
   }
   
   .members-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 2rem;
   }
   
   .member-card {
-    height: 350px;
+    height: 430px;
+  }
+  
+  .card-image-wrapper {
+    height: 70%;
   }
   
   .card-front,
   .card-back {
-    padding: 1.5rem;
-  }
-  
-  .member-icon {
-    font-size: 2.5rem;
+    border: 2px solid #8b7355;
   }
   
   .member-name {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
+  }
+  
+  .member-title {
+    font-size: 0.95rem;
+  }
+  
+  .member-country {
+    font-size: 0.8rem;
+  }
+  
+  .member-description {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .members {
+    padding: 4rem 0.5rem;
+  }
+  
+  .members-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .member-card {
+    height: 420px;
+  }
+  
+  .card-image-wrapper {
+    height: 70%;
+  }
+  
+  .card-front,
+  .card-back {
+    border: 2px solid #8b7355;
+    padding: 0;
+  }
+  
+  .member-name {
+    font-size: 1.2rem;
+  }
+  
+  .member-title {
+    font-size: 0.9rem;
+  }
+  
+  .member-country {
+    font-size: 0.75rem;
+  }
+  
+  .member-description {
+    font-size: 0.85rem;
+  }
+  
+  .member-role-badge {
+    font-size: 0.7rem;
+    padding: 0.4rem 0.8rem;
   }
 }

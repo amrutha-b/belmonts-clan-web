@@ -1,6 +1,8 @@
 import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import boyImage from '../../assets/boy.png';
+import girlImage from '../../assets/girl.png';
 import './Members.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -8,67 +10,83 @@ gsap.registerPlugin(ScrollTrigger);
 const clanMembers = [
   {
     id: 1,
-    name: 'Lord Aldric',
-    role: 'Leader',
-    title: 'The Strategist',
-    description: 'Master of tactics and diplomacy, guiding the clan with wisdom earned through countless campaigns.',
-    icon: '👑'
+    name: 'Phillip Dafoe',
+    country: 'United Kingdom',
+    title: 'The Swordmaster',
+    role: 'Warrior',
+    description: 'Master of the blade, sworn protector of the Belmont legacy.',
+    image: boyImage,
+    gender: 'male',
   },
   {
     id: 2,
-    name: 'Sir Gareth',
-    role: 'Knight',
-    title: 'The Vanguard',
-    description: 'First into battle, last to retreat. A warrior whose blade has never known defeat.',
-    icon: '⚔'
+    name: 'Lady Seraphine',
+    country: 'United Kingdom',
+    title: 'The Enchantress',
+    role: 'Mage',
+    description: 'Wielder of ancient magic, keeper of mystical secrets.',
+    image: girlImage,
+    gender: 'female',
   },
   {
     id: 3,
-    name: 'Lady Elara',
-    role: 'Strategist',
-    title: 'The Tactician',
-    description: 'Her mind is sharper than any sword, turning impossible odds into glorious victories.',
-    icon: '📜'
+    name: 'Rafe Whitmore',
+    country: 'United Kingdom',
+    title: 'The Shadow',
+    role: 'Assassin',
+    description: 'Silent as death, swift as shadow, loyal to the end.',
+    image: boyImage,
+    gender: 'male',
   },
   {
     id: 4,
-    name: 'Shadow',
-    role: 'Rogue',
-    title: 'The Phantom',
-    description: 'Unseen, unheard, unstoppable. Secrets are currency, and darkness is home.',
-    icon: '🗡'
+    name: 'Lady Morgaine',
+    country: 'United Kingdom',
+    title: 'The Tempest',
+    role: 'Ranger',
+    description: 'Fury of nature, protector of the wild lands.',
+    image: girlImage,
+    gender: 'female',
   },
   {
     id: 5,
-    name: 'Brother Marcus',
-    role: 'Healer',
-    title: 'The Warden',
-    description: 'Guardian of life and sacred keeper of ancient healing arts passed through generations.',
-    icon: '✚'
+    name: 'Lord Aldric',
+    country: 'Kingdom of Belmonts',
+    title: 'The Strategist',
+    role: 'General',
+    description: 'Architect of victory, mind sharper than any blade.',
+    image: boyImage,
+    gender: 'male',
   },
   {
     id: 6,
-    name: 'Theron',
-    role: 'Archer',
-    title: 'The Hawkeye',
-    description: 'A hundred paces or a thousand, his arrows find their mark with divine precision.',
-    icon: '🏹'
+    name: 'Sir Gareth',
+    country: 'Kingdom of Belmonts',
+    title: 'The Vanguard',
+    role: 'Knight',
+    description: 'First into battle, last to retreat, honor unshakeable.',
+    image: boyImage,
+    gender: 'male',
   },
   {
     id: 7,
-    name: 'Magistra Lyra',
-    role: 'Scholar',
-    title: 'The Lorekeeper',
-    description: 'Keeper of forbidden knowledge and ancient magics, guardian of the clan\'s history.',
-    icon: '📖'
+    name: 'Lady Elara',
+    country: 'Kingdom of Belmonts',
+    title: 'The Sage',
+    role: 'Healer',
+    description: 'Wisdom of ages flows through her healing touch.',
+    image: girlImage,
+    gender: 'female',
   },
   {
     id: 8,
-    name: 'Ironhide',
-    role: 'Defender',
-    title: 'The Bulwark',
-    description: 'An immovable fortress of steel and will, protecting all who stand behind him.',
-    icon: '🛡'
+    name: 'Theron',
+    country: 'Kingdom of Belmonts',
+    title: 'The Hawkeye',
+    role: 'Scout',
+    description: 'Eyes that pierce through darkness, never misses a mark.',
+    image: boyImage,
+    gender: 'male',
   }
 ];
 
@@ -121,14 +139,23 @@ export default function Members() {
             >
               <div className="card-inner">
                 <div className="card-front">
+                  <div className="card-image-wrapper">
+                    <img 
+                      src={member.image} 
+                      alt={member.name}
+                      className="member-image"
+                    />
+                    <div className="image-overlay"></div>
+                  </div>
+                  
                   <div className="card-header">
-                    <div className="member-icon">{member.icon}</div>
                     <div className="member-role-badge">{member.role}</div>
                   </div>
                   
                   <div className="card-content">
                     <h3 className="member-name">{member.name}</h3>
                     <p className="member-title">{member.title}</p>
+                    <p className="member-country">{member.country}</p>
                   </div>
                   
                   <div className="card-ornament">
